@@ -6,4 +6,7 @@
 #include <algorithm>
 #include <sstream>
 #include <cassert>
+#include <cmath>
+#include <stdlib.h>
+#include <climits>
 using namespace std;
