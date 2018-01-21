@@ -1,18 +1,23 @@
 #include "all.h"
 
+int dp[1005][1005];
+
 class Solution {
 public:
-    int myAtoi(string str) {
-		int sign = 1, base = 0, i = 0;
-		while (str[i] == ' ') ++i;
-		if (str[i] == '-' || str[i] == '+')
-			sign = (str[i++] == '-' ? -1 : 1);
-		while (str[i] >= '0' && str[i] <= '9') {
-			if (base > INT_MAX / 10 || (base == INT_MAX / 10 && str[i] - '0' > 7))
-				return sign == 1 ? INT_MAX : INT_MIN;
-			base = 10 * base + (str[i++] - '0');
-		}
-		return base * sign;
+    bool isMatch(string s, string p) {
+		memset(dp, 0, sizeof dp);
+		dp[0][0] = 1;
+		for (int i = 0; i <= s.size(); i++)
+			for (int j = 1; j <= p.size(); j++) {
+				if (p[j - 1] == '*') {
+					bool match = i && (s[i - 1] == p[j - 2] || p[j - 2] == '.');
+					dp[i][j] = dp[i][j - 2] || (match && dp[i - 1][j]);
+				} else {
+					bool match = i && (s[i - 1] == p[j - 1] || p[j - 1] == '.');
+					dp[i][j] = match && dp[i - 1][j - 1];
+				}
+			}
+		return dp[s.size()][p.size()];
     }
 };
 
@@ -42,14 +47,20 @@ string stringToString(string input) {
     return result;
 }
 
+string boolToString(bool input) {
+    return input ? "True" : "False";
+}
+
 int main() {
     string line;
     while (getline(cin, line)) {
-        string str = stringToString(line);
+        string s = stringToString(line);
+        getline(cin, line);
+        string p = stringToString(line);
         
-        int ret = Solution().myAtoi(str);
+        bool ret = Solution().isMatch(s, p);
 
-        string out = to_string(ret);
+        string out = boolToString(ret);
         cout << out << endl;
     }
     return 0;
