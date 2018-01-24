@@ -15,6 +15,7 @@
 #include <queue>
 #include <unordered_map>
 #include <unordered_set>
+#include <functional>
 using namespace std;
 
 struct ListNode {
