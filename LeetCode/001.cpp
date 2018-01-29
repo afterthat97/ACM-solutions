@@ -13,7 +13,7 @@ public:
 			if (j == nums.size()) continue;
 			if (i == j) continue;
 			if (nums[j] + nums[i] == target)
-				return vector<int> {dat[i].second, dat[j].second};
+				return vector<int> { dat[i].second, dat[j].second };
 		}
     }
 };
