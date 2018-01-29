@@ -8,30 +8,28 @@ int match[15] = {}, used[15] = {}, n, ans = 0x3f3f3f3f;
 
 void dfs(int k) {
 	if (k == n) {
-		int tot = 0, tmp[15] = {};
-		for (int i = 0; i < n; i++) tmp[i] = match[i];
+		int tot = 0, tmp[15] = {}, inv[15] = {};
 		for (int i = 0; i < n; i++) {
-			int x = a[i], y = b[match[i]];
+			tmp[i] = match[i]; inv[tmp[i]] = i;
+			int x = a[i], y = b[tmp[i]];
 			tot += min(abs(x - y), min(abs(10 + x - y), abs(-10 + x - y)));
+		}
+		for (int i = 0; i < n; i++)
 			if (i != tmp[i]) {
-				for (int j = i + 1; j < n; j++)
-					if (tmp[j] == i) {
-						swap(tmp[j], tmp[i]);
-						break;
-					}
+				int j = inv[i];
+				swap(inv[tmp[i]], inv[tmp[j]]);
+				swap(tmp[i], tmp[j]);
 				tot++;
 			}
-		}
 		ans = min(ans, tot);
-		return;
-	}
-	for (int i = 0; i < n; i++)
-		if (!used[i]) {
-			used[i] = 1;
-			match[k] = i;
-			dfs(k + 1);
-			used[i] = 0;
-		}
+	} else
+		for (int i = 0; i < n; i++)
+			if (!used[i]) {
+				used[i] = 1;
+				match[k] = i;
+				dfs(k + 1);
+				used[i] = 0;
+			}
 }
 
 int main() {
