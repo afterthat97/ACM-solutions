@@ -2,20 +2,20 @@
 
 class Solution {
 public:
-	vector<int> inorderTraversal(TreeNode* root) {
-		vector<int> ans;
-		stack<TreeNode*> s;
-		while (root || !s.empty())
-			if (root) {
-				s.push(root);
-				root = root->left;
-			} else {
-				root = s.top(); s.pop();
-				ans.push_back(root->val);
-				root = root->right;
-			}
-		return ans;
-	}
+vector<int> preorderTraversal(TreeNode* root) {
+	vector<int> ans;
+	stack<TreeNode*> s;
+	while (root || !s.empty())
+		if (root) {
+			s.push(root);
+			ans.push_back(root->val);
+			root = root->left;
+		} else {
+			root = s.top(); s.pop();
+			root = root->right;
+		}
+	return ans;
+}
 };
 
 void trimLeftTrailingSpaces(string &input) {
@@ -98,7 +98,7 @@ int main() {
     while (getline(cin, line)) {
         TreeNode* root = stringToTreeNode(line);
         
-        vector<int> ret = Solution().inorderTraversal(root);
+        vector<int> ret = Solution().preorderTraversal(root);
 
         string out = integerVectorToString(ret);
         cout << out << endl;
