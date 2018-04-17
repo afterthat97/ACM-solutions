@@ -34,6 +34,7 @@ void dijkstra(int ps) {
 			int dis = sp[cnt] + g[i].cost;
 			int dis2 = sp2[cnt] + g[i].cost; // dis <= dis2
 			if (sp[g[i].to] > dis) {
+				sp2[g[i].to] = sp[g[i].to];
 				sp[g[i].to] = dis;
 				q.push(node(sp[g[i].to], g[i].to));
 			}
