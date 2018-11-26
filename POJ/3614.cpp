@@ -1,65 +1,35 @@
 #include <iostream>
 #include <stdio.h>
-#include <queue>
 #include <algorithm>
-#define read(i) scanf("%d", &i);
+#include <queue>
+#define maxn 3000
+#define maxm 3000
 using namespace std;
 
-struct cow {
-	int min_SPF, max_SPF;
-};
-
-struct mdc {
-	int num, SPF;
-};
-
-int n, m;
-cow c[2510];
-mdc s[2510];
 priority_queue<int, vector<int>, greater<int> > q;
-
-bool cmp_cow(const cow&a, const cow&b) {
-	if (a.min_SPF < b.min_SPF)
-		return true;
-	else
-		return false;
-}
-
-bool cmp_mdc(const mdc&a, const mdc&b) {
-	if (a.SPF < b.SPF)
-		return true;
-	else
-		return false;
-}
+pair<int, int> cow[maxn], lotion[maxm];
+int n, m;
 
 int main() {
-	read(n)read(m);
-	for (int i = 0; i < n; i++) {
-		read(c[i].min_SPF);
-		read(c[i].max_SPF);
-	}
-	for (int i = 0; i < m; i++) {
-		read(s[i].SPF);
-		read(s[i].num);
-	}
-
-	sort(c, c + n, cmp_cow);
-	sort(s, s + m, cmp_mdc);
-
-	int j = 0, ans = 0;
-	for (int i = 0; i < m; i++) {//the ith SPF
-		while (j < n && c[j].min_SPF <= s[i].SPF) {
-			q.push(c[j].max_SPF);
-			j++;
-		}
-		while (!q.empty() && s[i].num > 0) {
-			if (q.top() >= s[i].SPF) {
-				s[i].num--;
-				ans++;
-			}
-			q.pop();
-		}
-	}
-	cout << ans << endl;
-	return 0;
+    scanf("%d %d", &n, &m);
+    for (int i = 0; i < n; i++)
+        scanf("%d %d", &cow[i].first, &cow[i].second);
+    for (int i = 0; i < m; i++)
+        scanf("%d %d", &lotion[i].first, &lotion[i].second);
+    sort(cow, cow + n);
+    sort(lotion, lotion + m);
+    int ans = 0;
+    for (int i = 0, j = 0; j < m; j++) {
+        while (i < n && cow[i].first <= lotion[j].first)
+            q.push(cow[i++].second);
+        while (!q.empty() && lotion[j].second) {
+            if (q.top() >= lotion[j].first) {
+                lotion[j].second--;
+                ans++;
+            }
+            q.pop();
+        }
+    }
+    printf("%d\n", ans);
+    return 0;
 }
